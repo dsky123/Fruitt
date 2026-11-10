@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Terminal v4.0.2</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; }
+        body { 
+            background-color: #030704; 
+            color: #00ff66; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px; 
+            overflow: hidden;
+        }
+        .container { 
+            background: #050d08; 
+            padding: 25px; 
+            border-radius: 6px; 
+            border: 1px solid #00ff66;
+            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2); 
+            width: 100%; 
+            max-width: 420px; 
+            text-align: left; 
+        }
+        .terminal-header {
+            font-size: 11px;
+            color: #00aa44;
+            margin-bottom: 15px;
+            border-bottom: 1px dashed #004411;
+            padding-bottom: 5px;
+        }
+        h1 { font-size: 18px; margin-bottom: 10px; color: #00ff66; text-transform: uppercase; letter-spacing: 1px; }
+        p { font-size: 13px; color: #88cc99; margin-bottom: 20px; line-height: 1.4; }
+        .fruit-list { background: #020503; padding: 12px; border-radius: 4px; font-size: 12px; color: #00ff66; margin-bottom: 20px; border: 1px solid #004411; }
+        input { 
+            width: 100%; padding: 12px; font-size: 15px; 
+            background: #000; color: #00ff66; 
+            border: 1px solid #00ff66; border-radius: 4px; 
+            text-align: left; margin-bottom: 15px; outline: none; 
+        }
+        input:focus { box-shadow: 0 0 8px rgba(0,255,102,0.5); }
+        button { 
+            width: 100%; padding: 12px; font-size: 14px; font-weight: bold; 
+            background: #00ff66; color: #000; border: none; border-radius: 4px; 
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.2s; 
+        }
+        button:hover { background: #00cc52; }
+
+        /* Fake Reboot / Virus Warning Screen */
+        #reboot-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000000; z-index: 9999; display: none;
+            justify-content: center; align-items: center; flex-direction: column;
+            color: #ff0033; font-family: 'Courier New', Courier, monospace; text-align: center; padding: 20px;
+        }
+        .glitch-title { font-size: 20px; font-weight: bold; margin-bottom: 15px; letter-spacing: 2px; }
+        .spinner {
+            width: 40px; height: 40px; border: 3px solid rgba(255,0,51,0.2);
+            border-top: 3px solid #ff0033; border-radius: 50%;
+            animation: spin 0.8s linear infinite; margin: 20px 0;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .boot-text { color: #ff6688; font-size: 13px; letter-spacing: 1px; }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="game-card">
+        <div class="terminal-header">[SYSTEM SECURE // VER: 4.0.2]</div>
+        <h1>> VERIFIKASI IDENTITAS</h1>
+        <p>Sistem mendeteksi akses tidak dikenal. Masukkan kunci enkripsi berupa nama buah yang valid untuk melanjutkan sesi.</p>
+        
+        <div class="fruit-list">
+            Kandidat Kunci:<br><b>[apel, mangga, pisang, semangka, durian]</b>
+        </div>
+
+        <input type="text" id="userGuess" placeholder="Ketik buah di sini..." autocomplete="off">
+        <button onclick="cekTebakan()">EKsekusi KUNCI</button>
+    </div>
+
+    <!-- FAKE VIRUS / REBOOT SCREEN -->
+    <div id="reboot-screen">
+        <div class="glitch-title">⚠️ SYSTEM OVERRIDE DETECTED ⚠️</div>
+        <div class="spinner"></div>
+        <div class="boot-text" id="bootStatus">KERNEL PANIC: MERESTART PERANGKAT...</div>
+    </div>
+
+    <script>
+        const secretFruit = "mangga"; // Kunci rahasia yang benar
+
+        function cekTebakan() {
+            const input = document.getElementById("userGuess").value.trim().toLowerCase();
+            const rebootScreen = document.getElementById("reboot-screen");
+            const bootStatus = document.getElementById("bootStatus");
+
+            if (!input) {
+                alert("INPUT KOSONG!");
+                return;
+            }
+
+            if (input === secretFruit) {
+                alert("ACCESS GRANTED. Selamat, enkripsi benar.");
+                document.getElementById("userGuess").value = "";
+            } else {
+                // SALAH -> Tampilkan Layar Seram ala Virus/Reboot
+                rebootScreen.style.display = "flex";
+
+                // Tahap 1: Panik awal (3 detik)
+                setTimeout(() => {
+                    bootStatus.innerText = "MEMBERSIHKAN SEKTOR MEMORI...";
+                }, 3000);
+
+                // Tahap 2: Ganti teks pemulihan (2 detik berikutnya)
+                setTimeout(() => {
+                    bootStatus.innerText = "BOOTING KEMBALI KERNEL...";
+                }, 5500);
+
+                // Tahap 3: Bongkar Prank setelah 7.5 detik
+                setTimeout(() => {
+                    rebootScreen.style.display = "none";
+                    alert("💀 KENA PRANK! Hahaha, tenang aja HP kamu aman kok, TAPII BOONGGGGGG!!!! 🤣");
+                    document.getElementById("userGuess").value = "";
+                }, 8000);
+            }
+        }
+    </script>
+</body>
+</html>
